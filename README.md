@@ -44,5 +44,5 @@ Set-ExecutionPolicy Bypass -Scope Process -Force; Invoke-Expression ((New-Object
 ### Install compact
 
 ```pwsh
-iwr http://bit.ly/3HSLFlE | Invoke-Expression
+iwr http://bit.ly/3HSLFlE | iex
 ```
