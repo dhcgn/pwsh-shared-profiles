@@ -40,3 +40,9 @@ Age encrypted file can be stored publicly, e.g. with a not guessable  link.
 ```pwsh
 Set-ExecutionPolicy Bypass -Scope Process -Force; Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/dhcgn/pwsh-shared-profiles/main/install.ps1'))
 ```
+
+### Install compact
+
+```pwsh
+iwr http://bit.ly/3HSLFlE | Invoke-Expression
+```

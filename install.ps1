@@ -115,12 +115,16 @@ function Check {
     if (-not (Test-Path $keyfile)) {
         Write-Error "Missing age key file $keyfile, please create a key file with age-keygen and copy the key to $keyfile"
     }
-    if (-not (Get-Alias $name -ErrorAction SilentlyContinue)) {
+    if (-not (Get-Alias age -ErrorAction SilentlyContinue)) {
         Write-Error "Missing age command, please install age and add it to the path or your profile"
     }
 }
 
 function Download-AgeEncryption {
+    if (Test-Path "$assetsFolder\age\age.exe") {
+        return
+    }
+
     $assetsFolder = Join-Path $env:USERPROFILE ".shared_profile" "bin"
     if (!(Test-Path $assetsFolder)) {
         New-Item -ItemType Directory -Path $assetsFolder
