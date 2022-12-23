@@ -40,7 +40,7 @@ function Update-SharedProfile {
 
 function Get-SharedProfileVersion {
     $hash = Get-FileHash $filePlain -Algorithm SHA256
-    return $hash.Hash.SubString(0,16)
+    return $hash.Hash.SubString(0, 16)
 }
 
 function Execute-SharedProfile {
@@ -48,7 +48,8 @@ function Execute-SharedProfile {
     Write-Host ("Execute Shared Profile SHA256: {0}" -f (Get-SharedProfileVersion))
     if (Test-Path $filePlain) {
         . $filePlain
-    }else {
+    }
+    else {
         Write-Error "Shared profile not found at $filePlain"
     }
 }
@@ -60,7 +61,7 @@ function Test-SharedProfileInstallation {
         Write-Error "Missing age key file $keyfile"
         $result = $false
     }
-    if (-not (Get-Alias $name -ErrorAction SilentlyContinue)) {
+    if (-not (Get-Alias age -ErrorAction SilentlyContinue)) {
         Write-Error "Missing age command"
         $result = $false
     }
@@ -72,7 +73,7 @@ function New-EncryptedSharedProfile {
     if (-Not (Test-SharedProfileInstallation)) {
         Write-Error "Shared profile will not work until you have a key file and age command"
         return
-     }
+    }
 
     age -e -i (Join-Path $env:USERPROFILE ".shared_profile" "age-profile-key.txt") -a (Join-Path $env:USERPROFILE ".shared_profile" "shared_profile.ps1")   
 }
