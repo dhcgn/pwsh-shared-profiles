@@ -51,12 +51,12 @@ function Get-SharedProfileHash {
 
 function Execute-SharedProfile {
     $filePlain = Join-Path $env:USERPROFILE ".shared_profile" "shared_profile.ps1"
-    Write-Host ("Execute Shared Profile SHA256: {0}" -f (Get-SharedProfileHash))
     if (Test-Path $filePlain) {
+        Write-Host ("Execute Shared Profile SHA256: {0}" -f (Get-SharedProfileHash))
         . $filePlain
     }
     else {
-        Write-Error "Shared profile not found at $filePlain"
+        Write-Host "Shared profile not found at $filePlain" -ForegroundColor Red
     }
 }
 
@@ -90,5 +90,5 @@ function New-EncryptedSharedProfile {
 }
 
 if (-Not (Test-SharedProfileInstallation)) {
-    Write-Host "Shared profile will not work until you have a key file and age command"
+    Write-Host "Shared profile will not work until you have a key file and age command" -ForegroundColor Red
 }
