@@ -74,6 +74,11 @@ function Test-SharedProfileInstallation {
     return $result
 }
 
+$ageexecutable = Join-Path $env:USERPROFILE ".shared_profile" "bin" "age" "age.exe"
+if (Test-Path $ageexecutable) {
+    Set-Alias -Name age -Value $ageexecutable
+}
+
 function New-EncryptedSharedProfile {
     if (-Not (Test-SharedProfileInstallation)) {
         Write-Error "Shared profile will not work until you have a key file and age command"
