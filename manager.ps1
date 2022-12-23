@@ -19,7 +19,8 @@ function Update-SharedProfile {
     if (Test-Path $filePlain) {
         $d = (Get-Date).Subtract((Get-ChildItem $filePlain).LastWriteTimeUtc)
         if ($d.TotalDays -lt 1) {
-            # return
+            # TODO be more smart
+            return
         }
     }
 
