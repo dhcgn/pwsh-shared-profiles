@@ -4,6 +4,10 @@ function Update-SharedProfile {
         [Parameter(Mandatory = $true)] [String] $Url
     )
 
+    if (-Not (Test-SharedProfileInstallation)) {
+        return
+    }
+
     $folder = Join-Path $env:USERPROFILE ".shared_profile"
 
     if (!(Test-Path $folder)) {
@@ -35,17 +39,18 @@ function Update-SharedProfile {
         Write-Error "Failed to decrypt $fileEnc"
         return
     }
-    Write-Host ("Updated Shared Profile SHA256: {0}" -f (Get-SharedProfileVersion))
+    Write-Host ("Updated Shared Profile SHA256: {0}" -f (Get-SharedProfileHash))
 }
 
-function Get-SharedProfileVersion {
+function Get-SharedProfileHash {
+    $filePlain = Join-Path $env:USERPROFILE ".shared_profile" "shared_profile.ps1"
     $hash = Get-FileHash $filePlain -Algorithm SHA256
     return $hash.Hash.SubString(0, 16)
 }
 
 function Execute-SharedProfile {
     $filePlain = Join-Path $env:USERPROFILE ".shared_profile" "shared_profile.ps1"
-    Write-Host ("Execute Shared Profile SHA256: {0}" -f (Get-SharedProfileVersion))
+    Write-Host ("Execute Shared Profile SHA256: {0}" -f (Get-SharedProfileHash))
     if (Test-Path $filePlain) {
         . $filePlain
     }
@@ -58,11 +63,11 @@ function Test-SharedProfileInstallation {
     $keyfile = Join-Path $env:USERPROFILE ".shared_profile" "age-profile-key.txt"
     $result = $true
     if (-not (Test-Path $keyfile)) {
-        Write-Error "Missing age key file $keyfile"
+        # Write-Host "Missing age key file $keyfile"
         $result = $false
     }
     if (-not (Get-Alias age -ErrorAction SilentlyContinue)) {
-        Write-Error "Missing age command"
+        # Write-Host "Missing age command"
         $result = $false
     }
 
@@ -79,5 +84,5 @@ function New-EncryptedSharedProfile {
 }
 
 if (-Not (Test-SharedProfileInstallation)) {
-    Write-Error "Shared profile will not work until you have a key file and age command"
+    Write-Host "Shared profile will not work until you have a key file and age command"
 }
