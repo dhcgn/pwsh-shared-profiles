@@ -1,5 +1,7 @@
 # pwsh-shared-profiles
 
+Under heavy development! Don't use yet!
+
 ## Install
 
 ```
