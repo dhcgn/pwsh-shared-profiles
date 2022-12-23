@@ -1,6 +1,5 @@
 function Update-SharedProfile {
-    [CmdletBinding()]
-    param (
+    param(
         [Parameter(Mandatory = $true)] [String] $Url
     )
 
@@ -24,7 +23,7 @@ function Update-SharedProfile {
         }
     }
 
-    $fileEnc = Join-Path $folder "shared_profile.ps1.age.txt"
+    $fileEnc = Join-Path $folder "shared_profile\ps1.age.txt"
     Write-Progress -Activity "Downloading shared profile" -Status "Downloading $Url"
     Invoke-WebRequest -Uri $Url -OutFile $fileEnc | Out-Null
     if (!$?) {
@@ -32,7 +31,7 @@ function Update-SharedProfile {
         return
     }
   
-    # age -e -i (Join-Path $env:USERPROFILE ".shared_profile" "age-profile-key.txt") -a (Join-Path $env:USERPROFILE ".shared_profile" "shared_profile.ps1")
+    # age -e -i (Join-Path $env:USERPROFILE ".shared_profile" "age-profile-key.txt") -a (Join-Path $env:USERPROFILE ".shared_profile\shared_profile.ps1")
 
     $id = Join-Path $folder "age-profile-key.txt"
     age -d -i $id -o $filePlain $fileEnc
@@ -44,13 +43,13 @@ function Update-SharedProfile {
 }
 
 function Get-SharedProfileHash {
-    $filePlain = Join-Path $env:USERPROFILE ".shared_profile" "shared_profile.ps1"
+    $filePlain = Join-Path $env:USERPROFILE ".shared_profile\shared_profile.ps1"
     $hash = Get-FileHash $filePlain -Algorithm SHA256
     return $hash.Hash.SubString(0, 16)
 }
 
 function Execute-SharedProfile {
-    $filePlain = Join-Path $env:USERPROFILE ".shared_profile" "shared_profile.ps1"
+    $filePlain = Join-Path $env:USERPROFILE ".shared_profile\shared_profile.ps1"
     if (Test-Path $filePlain) {
         Write-Host ("Execute Shared Profile SHA256: {0}" -f (Get-SharedProfileHash))
         . $filePlain
@@ -61,7 +60,7 @@ function Execute-SharedProfile {
 }
 
 function Test-SharedProfileInstallation {
-    $keyfile = Join-Path $env:USERPROFILE ".shared_profile" "age-profile-key.txt"
+    $keyfile = Join-Path $env:USERPROFILE ".shared_profile\age-profile-key.txt"
     $result = $true
     if (-not (Test-Path $keyfile)) {
         # Write-Host "Missing age key file $keyfile"
@@ -75,7 +74,7 @@ function Test-SharedProfileInstallation {
     return $result
 }
 
-$ageexecutable = Join-Path $env:USERPROFILE ".shared_profile" "bin" "age" "age.exe"
+$ageexecutable = Join-Path $env:USERPROFILE ".shared_profile\bin\age\age.exe"
 if (Test-Path $ageexecutable) {
     Set-Alias -Name age -Value $ageexecutable
 }
@@ -86,7 +85,7 @@ function New-EncryptedSharedProfile {
         return
     }
 
-    age -e -i (Join-Path $env:USERPROFILE ".shared_profile" "age-profile-key.txt") -a (Join-Path $env:USERPROFILE ".shared_profile" "shared_profile.ps1")   
+    age -e -i (Join-Path $env:USERPROFILE ".shared_profile\age-profile-key.txt") -a (Join-Path $env:USERPROFILE ".shared_profile\shared_profile.ps1")   
 }
 
 if (-Not (Test-SharedProfileInstallation)) {
