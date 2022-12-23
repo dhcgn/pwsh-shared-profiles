@@ -103,6 +103,9 @@ function Setup-FolderAndFiles {
     $url = "https://raw.githubusercontent.com/dhcgn/pwsh-shared-profiles/main/manager.ps1"
     Invoke-WebRequest -Uri $url -OutFile (Join-Path $scriptsFolder "manager.ps1")
 
+    $url = "https://raw.githubusercontent.com/dhcgn/pwsh-shared-profiles/main/install.ps1"
+    Invoke-WebRequest -Uri $url -OutFile (Join-Path $scriptsFolder "install.ps1")
+
     $url = "https://raw.githubusercontent.com/dhcgn/pwsh-shared-profiles/main/README.md"
     Invoke-WebRequest -Uri $url -OutFile (Join-Path $folder "README.md")
 }
@@ -117,7 +120,25 @@ function Check {
     }
 }
 
+function Download-AgeEncryption {
+    $assetsFolder = Join-Path $env:USERPROFILE ".shared_profile" "bin"
+    if (!(Test-Path $assetsFolder)) {
+        New-Item -ItemType Directory -Path $assetsFolder
+    }
+
+    $ageurl = "https://github.com/FiloSottile/age/releases/download/v1.0.0/age-v1.0.0-windows-amd64.zip"
+    
+    Invoke-WebRequest -Uri $ageurl -OutFile "$assetsFolder\age.zip"; 
+    Expand-Archive -Path "$assetsFolder\age.zip" -DestinationPath $assetsFolder
+    Remove-Item "$assetsFolder\age.zip"
+
+    if (-Not (Test-Path "$assetsFolder\age\age.exe")) {
+        Write-Error "Failed to download age"
+    }   
+}
+
 Setup-FolderAndFiles
 Setup-Profiles
+Download-AgeEncryption
 
 Check
