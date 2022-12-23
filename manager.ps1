@@ -1,6 +1,5 @@
 function Update-SharedProfile {
-    [CmdletBinding()]
-    param (
+    param(
         [Parameter(Mandatory = $true)] [String] $Url
     )
 

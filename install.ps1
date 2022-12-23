@@ -10,7 +10,7 @@
 #>
 
 function Setup-Profiles {
-    $scriptBlockVersion = "0.0.2"
+    $scriptBlockVersion = "0.0.3"
     $scriptBlock = @'
 # START shared_profile
 # shared_profile version: %%scriptBlockVersion%%
