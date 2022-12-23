@@ -101,13 +101,13 @@ function Setup-FolderAndFiles {
     }
 
     $url = "https://raw.githubusercontent.com/dhcgn/pwsh-shared-profiles/main/manager.ps1"
-    Invoke-WebRequest -Uri $url -OutFile (Join-Path $scriptsFolder "manager.ps1") -Headers @{"Cache-Control"="no-cache"}
+    Invoke-WebRequest -Uri $url -OutFile (Join-Path $scriptsFolder "manager.ps1") -Headers @{"Cache-Control" = "no-cache" }
 
     $url = "https://raw.githubusercontent.com/dhcgn/pwsh-shared-profiles/main/install.ps1"
-    Invoke-WebRequest -Uri $url -OutFile (Join-Path $scriptsFolder "install.ps1") -Headers @{"Cache-Control"="no-cache"}
+    Invoke-WebRequest -Uri $url -OutFile (Join-Path $scriptsFolder "install.ps1") -Headers @{"Cache-Control" = "no-cache" }
 
     $url = "https://raw.githubusercontent.com/dhcgn/pwsh-shared-profiles/main/README.md"
-    Invoke-WebRequest -Uri $url -OutFile (Join-Path $folder "README.md") -Headers @{"Cache-Control"="no-cache"}
+    Invoke-WebRequest -Uri $url -OutFile (Join-Path $folder "README.md") -Headers @{"Cache-Control" = "no-cache" }
 }
 
 function Check {
@@ -121,11 +121,11 @@ function Check {
 }
 
 function Download-AgeEncryption {
+    $assetsFolder = Join-Path $env:USERPROFILE ".shared_profile" "bin"
     if (Test-Path "$assetsFolder\age\age.exe") {
         return
     }
-
-    $assetsFolder = Join-Path $env:USERPROFILE ".shared_profile" "bin"
+    
     if (!(Test-Path $assetsFolder)) {
         New-Item -ItemType Directory -Path $assetsFolder
     }
