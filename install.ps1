@@ -15,7 +15,7 @@ function Setup-Profiles {
 # START shared_profile
 # shared_profile version: %%scriptBlockVersion%%
 
-. (Join-Path $env:USERPROFILE ".shared_profile" ".ps1\manager.ps1")
+. (Join-Path $env:USERPROFILE ".shared_profile\.ps1\manager.ps1")
 
 Update-SharedProfile -Url "%%URL%%"
 Execute-SharedProfile
@@ -95,7 +95,7 @@ function Setup-FolderAndFiles {
         New-Item -ItemType Directory -Path $folder
     }
 
-    $scriptsFolder = Join-Path $env:USERPROFILE ".shared_profile" ".ps1"
+    $scriptsFolder = Join-Path $env:USERPROFILE ".shared_profile\.ps1"
     if (!(Test-Path $scriptsFolder)) {
         New-Item -ItemType Directory -Path $scriptsFolder
     }
@@ -111,7 +111,7 @@ function Setup-FolderAndFiles {
 }
 
 function Check {
-    $keyfile = Join-Path $env:USERPROFILE ".shared_profile" "age-profile-key.txt"
+    $keyfile = Join-Path $env:USERPROFILE ".shared_profile\age-profile-key.txt"
     if (-not (Test-Path $keyfile)) {
         Write-Error "Missing age key file $keyfile, please create a key file with age-keygen and copy the key to $keyfile"
     }
@@ -121,7 +121,7 @@ function Check {
 }
 
 function Download-AgeEncryption {
-    $assetsFolder = Join-Path $env:USERPROFILE ".shared_profile" "bin"
+    $assetsFolder = Join-Path $env:USERPROFILE ".shared_profile\bin"
     if (Test-Path "$assetsFolder\age\age.exe") {
         return
     }
