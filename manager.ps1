@@ -85,6 +85,7 @@ function New-EncryptedSharedProfile {
         return
     }
 
+    Write-Host "This will only encrypt the shared_profile.ps1 with the key file in .shared_profile\age-profile-key.txt, if you use multiple keys, you will need to encrypt the file yourself!" -ForegroundColor Yellow
     age -e -i (Join-Path $env:USERPROFILE ".shared_profile\age-profile-key.txt") -a (Join-Path $env:USERPROFILE ".shared_profile\shared_profile.ps1")   
 }
 
