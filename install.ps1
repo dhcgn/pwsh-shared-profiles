@@ -130,7 +130,7 @@ function Download-AgeEncryption {
         New-Item -ItemType Directory -Path $assetsFolder
     }
 
-    $ageurl = "https://github.com/FiloSottile/age/releases/download/v1.0.0/age-v1.0.0-windows-amd64.zip"
+    $ageurl = "https://github.com/FiloSottile/age/releases/download/v1.1.0/age-v1.1.0-windows-amd64.zip"
     
     Invoke-WebRequest -Uri $ageurl -OutFile "$assetsFolder\age.zip"; 
     Expand-Archive -Path "$assetsFolder\age.zip" -DestinationPath $assetsFolder
