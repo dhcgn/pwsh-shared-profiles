@@ -23,7 +23,7 @@ function Update-SharedProfile {
         }
     }
 
-    $fileEnc = Join-Path $folder "shared_profile\ps1.age.txt"
+    $fileEnc = Join-Path $folder "ps1.age.txt"
     Write-Progress -Activity "Downloading shared profile" -Status "Downloading $Url"
     Invoke-WebRequest -Uri $Url -OutFile $fileEnc | Out-Null
     if (!$?) {
