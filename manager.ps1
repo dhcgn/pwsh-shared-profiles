@@ -1,6 +1,7 @@
 function Update-SharedProfile {
     param(
-        [Parameter(Mandatory = $true)] [String] $Url
+        [Parameter(Mandatory = $true)] [String] $Url,
+        [switch] $Force
     )
 
     if (-Not (Test-SharedProfileInstallation)) {
@@ -17,7 +18,7 @@ function Update-SharedProfile {
     
     if (Test-Path $filePlain) {
         $d = (Get-Date).Subtract((Get-ChildItem $filePlain).LastWriteTimeUtc)
-        if ($d.TotalDays -lt 1) {
+        if ($d.TotalDays -lt 1 && -Not $Force) {
             # TODO be more smart
             return
         }
