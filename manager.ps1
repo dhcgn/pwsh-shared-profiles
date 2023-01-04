@@ -34,13 +34,28 @@ function Update-SharedProfile {
   
     # age -e -i (Join-Path $env:USERPROFILE ".shared_profile" "age-profile-key.txt") -a (Join-Path $env:USERPROFILE ".shared_profile\shared_profile.ps1")
 
+    $filePlainTemp = $filePlain + ".temp" 
     $id = Join-Path $folder "age-profile-key.txt"
-    age -d -i $id -o $filePlain $fileEnc
+    age -d -i $id -o $filePlainTemp $fileEnc *> age.log
     if (!$?) {
         Write-Error "Failed to decrypt $fileEnc"
+        Write-Host (Get-Content age.log)
         return
     }
-    Write-Host ("Updated Shared Profile SHA256: {0}" -f (Get-SharedProfileHash))
+
+    Remove-Item age.log -Force -ErrorAction SilentlyContinue
+
+    $new = Get-FileHash $filePlainTemp
+    $old = Get-FileHash $filePlain
+
+    if ($new.Hash -eq $old.Hash) {
+        Remove-Item $filePlainTemp -Force
+        Write-Host ("Remote Shared Profile not changed")
+    }
+    else {
+        Move-Item -Path $filePlainTemp -Destination $filePlain -Force
+        Write-Host ("Updated Shared Profile SHA256: {0}" -f (Get-SharedProfileHash))
+    }
 }
 
 function Get-SharedProfileHash {
